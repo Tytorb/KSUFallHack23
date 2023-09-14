@@ -1,5 +1,18 @@
 .App {
   text-align: center;
+  color: rgb(199, 199, 199);
+  background-color: #282c34;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+}
+
+.input {
+  width: 100vw;
+  display: flex;
+  height: 100vh;
+  margin-top: 10%;
+  justify-content: space-between;
 }
 
 .App-logo {

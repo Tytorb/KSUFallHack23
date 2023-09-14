@@ -19,7 +19,7 @@ app = start_application()
 
 @app.get("/")
 def home():
-    return {"msg": "Hello FastAPI🚀"}
+    return {"msg": "nruh"}
 
 
 # from fastapi import FastAPI

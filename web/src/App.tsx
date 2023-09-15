@@ -1,7 +1,9 @@
+import React, { useState } from "react";
 import { TextField } from "@mui/material";
 import "./App.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Header from "./components/header";
+import "./components/sass/sidebar.scss";
 
 const darkTheme = createTheme({
   palette: {
@@ -10,16 +12,24 @@ const darkTheme = createTheme({
 });
 
 function App() {
+  const [sidebar, setSidebar] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebar(!sidebar);
+  };
+
   return (
     <ThemeProvider theme={darkTheme}>
-      <Header />
+      <Header sidebar={sidebar} toggleSidebar={toggleSidebar} />{" "}
+      {/* Pass the state and the function to toggle it as props */}
       <div className="App">
-        <div className="input">
-          <TextField />
-
-          <TextField />
-
-          <TextField />
+        <div className={`sidebar ${sidebar ? "active" : ""}`}></div>
+        <div className="App-logo">
+          <div className="input">
+            <TextField />
+            <TextField />
+            <TextField />
+          </div>
         </div>
       </div>
     </ThemeProvider>

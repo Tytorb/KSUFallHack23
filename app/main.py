@@ -1,13 +1,10 @@
-from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi import FastAPI, HTTPException, Depends, status, Response
 from config import settings
 from session import engine
 from session import engine, SessionLocal
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from typing import List, Annotated
-
-# from models import Container
-# from models import Item
 import models
 
 
@@ -55,14 +52,36 @@ async def part_id(part: Container, db: db_dependency):
     db.commit()
 
 
+class ContainerResponseSchema(BaseModel):
+    part_id: int
+    type: str
+    length: int
+    width: int
+    height: int
+
+
+@app.get(
+    "/container/",
+    response_model=ContainerResponseSchema,
+    status_code=status.HTTP_200_OK,
+)
+async def read_part_id(part_id: int, db: Session = Depends(get_db)):
+    container = (
+        db.query(models.Container).filter(models.Container.part_id == part_id).first()
+    )
+    if container is None:
+        raise HTTPException(status_code=404, detail="No container existing")
+
+    response_model_instance = ContainerResponseSchema(**container.__dict__)
+
+    return response_model_instance
+
+
 # @app.get("/container/", status_code=status.HTTP_200_OK)
-# async def read_part_id(container_id: int, db_dependency):
+# async def read_part_id(part_id: int, db: Session):
 #     container = (
-#         db.query(models.Container).filter(models.Container.id == container_id).first()
+#         db.query(models.Container).filter(models.Container.id == part_id).first()
 #     )
 #     if container is None:
 #         raise HTTPException(status_code=404, detail="No container existing")
 #     return container
-
-
-# issue is that get is breaking the rest of it. Error "Mapper Mapper[Container(container)] could not assemble any primary key columns for mapped table 'container'"

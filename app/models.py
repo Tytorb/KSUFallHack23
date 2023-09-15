@@ -7,9 +7,9 @@ class Container(Base):
 
     part_id = Column(Integer, primary_key=True, index=True)
     type = Column(String(50), unique=True)
-    length = Column(Integer, primary_key=True, index=True)
-    width = Column(Integer, primary_key=True, index=True)
-    height = Column(Integer, primary_key=True, index=True)
+    length = Column(Integer, primary_key=False, index=True)
+    width = Column(Integer, primary_key=False, index=True)
+    height = Column(Integer, primary_key=False, index=True)
 
 
 class Item(Base):
@@ -17,6 +17,6 @@ class Item(Base):
 
     part_id = Column(Integer, primary_key=True, index=True)
     type = Column(String(50), unique=True)
-    length = Column(Integer, primary_key=True, index=True)
-    width = Column(Integer, primary_key=True, index=True)
-    height = Column(Integer, primary_key=True, index=True)
+    length = Column(Integer, primary_key=False, index=True)
+    width = Column(Integer, primary_key=False, index=True)
+    height = Column(Integer, primary_key=False, index=True)

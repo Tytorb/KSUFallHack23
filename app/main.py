@@ -6,10 +6,23 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from typing import List, Annotated
 import models
+from fastapi.middleware.cors import CORSMiddleware
+
+
+origins = [
+    "http://localhost:3000",
+]
 
 
 def start_application():
     app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
     return app
 
 

@@ -3,6 +3,7 @@ import { TextField } from "@mui/material";
 import "./App.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Header from "./components/header";
+import axios from "axios";
 import "./components/sass/sidebar.scss";
 
 const darkTheme = createTheme({
@@ -11,7 +12,20 @@ const darkTheme = createTheme({
   },
 });
 
+const options = {
+  method: "GET",
+  url: "http://127.0.0.1:8000/item/?part_id=0",
+};
+
 function App() {
+  axios
+    .request(options)
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
   const [sidebar, setSidebar] = useState(false);
 
   const toggleSidebar = () => {

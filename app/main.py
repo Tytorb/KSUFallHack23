@@ -37,6 +37,14 @@ class Container(BaseModel):
     height: float
 
 
+class Item(BaseModel):
+    part_id: int
+    type: str
+    length: float
+    width: float
+    height: float
+
+
 @app.get("/")
 def home():
     return {"msg": "nruh"}
@@ -72,3 +80,33 @@ async def read_part_id(part_id: int, db: Session = Depends(get_db)):
     response_model_instance = ContainerResponseSchema(**container.__dict__)
 
     return response_model_instance
+
+
+@app.post("/item/", status_code=status.HTTP_201_CREATED)
+async def part_id(part: Item, db: db_dependency):
+    db_container = models.Item(**part.dict())
+    db.add(db_container)
+    db.commit()
+
+
+@app.get(
+    "/item/",
+    response_model=ContainerResponseSchema,
+    status_code=status.HTTP_200_OK,
+)
+async def read_part_id(part_id: int, db: Session = Depends(get_db)):
+    item = db.query(models.Item).filter(models.Item.part_id == part_id).first()
+    if item is None:
+        raise HTTPException(status_code=404, detail="No container existing")
+
+    response_model_instance = ContainerResponseSchema(**item.__dict__)
+
+    return response_model_instance
+
+
+class ContainerResponseSchema(BaseModel):
+    part_id: int
+    type: str
+    length: float
+    width: float
+    height: float

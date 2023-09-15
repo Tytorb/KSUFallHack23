@@ -117,6 +117,34 @@ async def read_part_id(part_id: int, db: Session = Depends(get_db)):
     return response_model_instance
 
 
+@app.delete(
+    "/container/{part_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_container(part_id: int, db: Session = Depends(get_db)):
+    container = (
+        db.query(models.Container).filter(models.Container.part_id == part_id).first()
+    )
+    if container is None:
+        raise HTTPException(status_code=404, detail="No container existing")
+
+    db.delete(container)
+    db.commit()
+
+
+@app.delete(
+    "/item/{part_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_part_id(part_id: int, db: Session = Depends(get_db)):
+    item = db.query(models.Item).filter(models.Item.part_id == part_id).first()
+    if item is None:
+        raise HTTPException(status_code=404, detail="No part existing")
+
+    db.delete(item)
+    db.commit()
+
+
 class ContainerResponseSchema(BaseModel):
     part_id: int
     type: str

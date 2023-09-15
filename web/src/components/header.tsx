@@ -17,6 +17,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
   return (
+    // @ts-ignore
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>

@@ -20,6 +20,12 @@
   padding-top: 10%;
 }
 
+.render {
+  justify-content: center;
+  width: 100vw;
+  height: 700px;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin 1s ease-out;

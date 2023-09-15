@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, FLOAT
 from session import Base
 
 
@@ -7,9 +7,9 @@ class Container(Base):
 
     part_id = Column(Integer, primary_key=True, index=True)
     type = Column(String(50), unique=True)
-    length = Column(Integer, primary_key=False, index=True)
-    width = Column(Integer, primary_key=False, index=True)
-    height = Column(Integer, primary_key=False, index=True)
+    length = Column(FLOAT, primary_key=False, index=True)
+    width = Column(FLOAT, primary_key=False, index=True)
+    height = Column(FLOAT, primary_key=False, index=True)
 
 
 class Item(Base):
@@ -17,6 +17,6 @@ class Item(Base):
 
     part_id = Column(Integer, primary_key=True, index=True)
     type = Column(String(50), unique=True)
-    length = Column(Integer, primary_key=False, index=True)
-    width = Column(Integer, primary_key=False, index=True)
-    height = Column(Integer, primary_key=False, index=True)
+    length = Column(FLOAT, primary_key=False, index=True)
+    width = Column(FLOAT, primary_key=False, index=True)
+    height = Column(FLOAT, primary_key=False, index=True)

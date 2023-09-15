@@ -14,7 +14,8 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
-  const { loginWithRedirect, isAuthenticated } = useAuth0();
+  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -32,9 +33,15 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             OptiLoad
           </Typography>
-          <Button onClick={() => loginWithRedirect()} color="inherit">
-            Login
-          </Button>
+          {!isAuthenticated ? (
+            <Button onClick={() => loginWithRedirect()} color="inherit">
+              Login
+            </Button>
+          ) : (
+            <Button onClick={() => logout()} color="inherit">
+              Logout
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

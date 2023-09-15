@@ -25,7 +25,14 @@ function App() {
       <div className="App">
         <div className={`sidebar ${sidebar ? "active" : ""}`}></div>
         <div className="App-logo">
+          <h1>Conatiner</h1>
           <div className="input">
+            <TextField />
+            <TextField />
+            <TextField />
+          </div>
+          <h1>Load</h1>
+          <div className="input2">
             <TextField />
             <TextField />
             <TextField />

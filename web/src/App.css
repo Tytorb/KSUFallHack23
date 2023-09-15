@@ -5,10 +5,19 @@
   position: fixed;
   width: 100vw;
   height: 100vh;
+  overflow-y: auto;
 }
 
 .input {
-  justify-content: space-between;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 10%;
+}
+
+.input2 {
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 10%;
 }
 
 @media (prefers-reduced-motion: no-preference) {

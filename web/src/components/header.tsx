@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface HeaderProps {
   sidebar: boolean;
@@ -13,6 +14,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -30,7 +32,9 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             OptiLoad
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button onClick={() => loginWithRedirect()} color="inherit">
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>

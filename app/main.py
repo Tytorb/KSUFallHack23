@@ -32,12 +32,9 @@ db_dependency = Annotated[Session, Depends(get_db)]
 class Container(BaseModel):
     part_id: int
     type: str
-    length: int
-    width: int
-    height: int
-
-
-# API Engpoints BELOW
+    length: float
+    width: float
+    height: float
 
 
 @app.get("/")
@@ -55,9 +52,9 @@ async def part_id(part: Container, db: db_dependency):
 class ContainerResponseSchema(BaseModel):
     part_id: int
     type: str
-    length: int
-    width: int
-    height: int
+    length: float
+    width: float
+    height: float
 
 
 @app.get(
@@ -75,13 +72,3 @@ async def read_part_id(part_id: int, db: Session = Depends(get_db)):
     response_model_instance = ContainerResponseSchema(**container.__dict__)
 
     return response_model_instance
-
-
-# @app.get("/container/", status_code=status.HTTP_200_OK)
-# async def read_part_id(part_id: int, db: Session):
-#     container = (
-#         db.query(models.Container).filter(models.Container.id == part_id).first()
-#     )
-#     if container is None:
-#         raise HTTPException(status_code=404, detail="No container existing")
-#     return container

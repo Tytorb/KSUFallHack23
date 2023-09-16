@@ -1,5 +1,6 @@
 from py3dbp import Packer, Bin, Item
 from io import StringIO
+from typing import List
 
 
 class PackingResult:
@@ -22,7 +23,7 @@ class PackingResult:
         )
 
 
-def testing(container_data: object) -> PackingResult:
+def testing(container_data: object, item_data: List[object]) -> PackingResult:
     packing_result = PackingResult()
 
     packer = Packer()
@@ -36,9 +37,16 @@ def testing(container_data: object) -> PackingResult:
         )
     )
 
-    packer.add_item(Item("NAPA Premium Brake Rotor", 3, 3, 3, 3))
-    packer.add_item(Item("NAPA PROFORMER Beam Wiper Blade", 3, 3, 3, 3))
-    packer.add_item(Item("NAPA The Legend Premium AGM Battery", 3, 3, 3, 3))
+    for i in item_data:
+        packer.add_item(
+            Item(
+                i.name,
+                i.width,
+                i.height,
+                i.depth,
+                i.weight,
+            )
+        )
 
     packer.pack()
     for b in packer.bins:

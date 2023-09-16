@@ -159,10 +159,21 @@ class Contain(BaseModel):
     max_weight: float
 
 
+class Items(BaseModel):
+    name: str
+    width: float
+    height: float
+    depth: float
+    weight: float
+
+
 @app.post("/test/", status_code=status.HTTP_200_OK, response_model=object)
-async def calc(container_data: Contain):
-    testing(container_data)
-    return testing(container_data)
+async def calc(container_data: Contain, items_data: List[Items]):
+    for item in items_data:
+        print(item.name, item.width, item.height, item.depth, item.weight)
+
+    testing(container_data, items_data)
+    return testing(container_data, items_data)
 
 
 class ContainerResponseSchema(BaseModel):

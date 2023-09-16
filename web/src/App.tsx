@@ -273,6 +273,12 @@ function App() {
                 Submit
               </Button>
             </div>
+            {sumbited && (
+              <>
+                Fitted: {fullData.bins[0].fitted_items.length} Unfitted:{" "}
+                {fullData.bins[0].unfitted_items.length}
+              </>
+            )}
           </div>
         </div>
 

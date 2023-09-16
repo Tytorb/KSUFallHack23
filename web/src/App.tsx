@@ -99,15 +99,7 @@ function App() {
       depth: textField4,
       max_weight: textField5,
     },
-    items_data: [
-      {
-        name: "string",
-        width: 0,
-        height: 0,
-        depth: 0,
-        weight: 0,
-      },
-    ],
+    items_data: itemsData,
   };
 
   const options = {
@@ -189,6 +181,45 @@ function App() {
                     updatedItems[index] = {
                       ...item,
                       width: parseFloat(e.target.value),
+                    };
+                    setItemsData(updatedItems);
+                  }}
+                />
+                <TextField
+                  label="Height"
+                  type="number"
+                  value={item.height}
+                  onChange={(e) => {
+                    const updatedItems = [...itemsData];
+                    updatedItems[index] = {
+                      ...item,
+                      height: parseFloat(e.target.value),
+                    };
+                    setItemsData(updatedItems);
+                  }}
+                />
+                <TextField
+                  label="Depth"
+                  type="number"
+                  value={item.depth}
+                  onChange={(e) => {
+                    const updatedItems = [...itemsData];
+                    updatedItems[index] = {
+                      ...item,
+                      depth: parseFloat(e.target.value),
+                    };
+                    setItemsData(updatedItems);
+                  }}
+                />
+                <TextField
+                  label="Max Weight"
+                  type="number"
+                  value={item.weight}
+                  onChange={(e) => {
+                    const updatedItems = [...itemsData];
+                    updatedItems[index] = {
+                      ...item,
+                      weight: parseFloat(e.target.value),
                     };
                     setItemsData(updatedItems);
                   }}

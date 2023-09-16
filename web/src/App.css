@@ -11,10 +11,11 @@
 .input {
   display: flex;
   justify-content: space-evenly;
-  padding: 10%;
+  padding-top: 10%;
 }
 
 .item-container {
+  justify-content: space-evenly;
   display: inline;
   padding-top: 2%;
 }
@@ -23,7 +24,7 @@
   justify-content: space-evenly;
   display: flex;
   flex-direction: column;
-  padding-top: 10%;
+  padding-top: 5%;
 }
 
 .render {

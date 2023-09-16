@@ -51,6 +51,31 @@ function Boxfill(props) {
   );
 }
 
+// @ts-ignore
+
+function Boxfill2(props) {
+  // This reference gives us direct access to the THREE.Mesh object
+  const ref = useRef();
+  // Hold state for hovered and clicked events
+  const [hovered, hover] = useState(false);
+  const [clicked, click] = useState(false);
+  // Subscribe this component to the render-loop, rotate the mesh every frame
+  // @ts-ignore
+
+  return (
+    <mesh
+      {...props}
+      ref={ref}
+      onClick={(event) => click(!clicked)}
+      onPointerOver={(event) => (event.stopPropagation(), hover(true))}
+      onPointerOut={(event) => hover(false)}
+    >
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color={"green"} wireframe={true} />
+    </mesh>
+  );
+}
+
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -67,6 +92,8 @@ function App() {
   });
 
   const [sumbited, setSubmitted] = useState(false);
+
+  const [preset, setPreset] = useState(false);
 
   const [fullData, setFullData] = useState();
 
@@ -131,7 +158,15 @@ function App() {
       <Header sidebar={sidebar} toggleSidebar={toggleSidebar} />{" "}
       {/* Pass the state and the function to toggle it as props */}
       <div className="App">
-        <div className={`sidebar ${sidebar ? "active" : ""}`}></div>
+        <div className={`sidebar ${sidebar ? "active" : ""}`}>
+          <Button
+            onClick={() => {
+              setPreset(!preset);
+            }}
+          >
+            pallet
+          </Button>
+        </div>
         <div className="App-logo">
           <h1>Conatiner</h1>
           <div className="input">
@@ -246,6 +281,42 @@ function App() {
             <ambientLight intensity={0.5} />
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
             <pointLight position={[-10, -10, -10]} />
+            {preset && (
+              <>
+                <Box position={[0, 0, 0]} scale={3} />
+                <Boxfill position={[-1, -1, -1]} scale={1} />
+                <Boxfill2
+                  position={[-1.5 + 0.5 / 2, -1.5 + 0.5 / 2, -1.5 / 2]}
+                  scale={0.5}
+                />
+                <Boxfill position={[-1, 0, -1]} scale={1} />
+                <Boxfill2 position={[-1, -1.5 + 2.5 / 2, -1]} scale={0.5} />
+                {/* @ts-ignore */}
+                {/* {fullData.bins[0].fitted_items.map((item, index) => (
+                  <Boxfill
+                    key={index}
+                    position={[
+                      -(
+                        fullData?.bins[0].width -
+                        item.width -
+                        item.pos[0] * 2
+                      ) / 2,
+                      -(
+                        fullData?.bins[0].height -
+                        item.height -
+                        item.pos[1] * 2
+                      ) / 2,
+                      -(
+                        fullData?.bins[0].depth -
+                        item.depth -
+                        item.pos[2] * 2
+                      ) / 2,
+                    ]}
+                    scale={[item.width, item.height, item.depth]}
+                  />
+                ))} */}
+              </>
+            )}
             {sumbited && (
               <>
                 <Box

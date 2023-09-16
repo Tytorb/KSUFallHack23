@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { TextField } from "@mui/material";
 import "./App.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -7,18 +7,14 @@ import axios from "axios";
 import "./components/sass/sidebar.scss";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
+import { Button } from "@mui/material";
 
 // @ts-ignore
 function Box(props) {
-  // This reference gives us direct access to the THREE.Mesh object
   const ref = useRef();
-  // Hold state for hovered and clicked events
-  const [hovered, hover] = useState(false);
-  const [clicked, click] = useState(false);
-  // Subscribe this component to the render-loop, rotate the mesh every frame
-  // @ts-ignore
 
-  // Return the view, these are regular Threejs elements expressed in JSX
+  const [hovered, hover] = useState(false);
+
   return (
     <mesh
       {...props}
@@ -64,16 +60,63 @@ const darkTheme = createTheme({
   },
 });
 
-const options = {
-  method: "GET",
-  url: "http://127.0.0.1:8000/item/?part_id=0",
-};
-
 function App() {
+  const [containerData, setContainerData] = useState({
+    name: "string",
+    width: 0,
+    height: 0,
+    depth: 0,
+    max_weight: 0,
+  });
+
+  const [sumbited, setSubmitted] = useState(false);
+
+  const [fullData, setFullData] = useState();
+
+  const [itemsData, setItemsData] = useState([
+    {
+      name: "string",
+      width: 0,
+      height: 0,
+      depth: 0,
+      weight: 0,
+    },
+  ]);
+  const [textField1, setTextField1] = useState("");
+  const [textField2, setTextField2] = useState("");
+  const [textField3, setTextField3] = useState("");
+  const [textField4, setTextField4] = useState("");
+  const [textField5, setTextField5] = useState("");
+  const [textField6, setTextField6] = useState("");
+  const [textField7, setTextField7] = useState("");
+  const [textField8, setTextField8] = useState("");
+
+  useEffect(() => {
+    console.log(fullData);
+    console.log(sumbited);
+  });
+
+  var returnd = {
+    container_data: {
+      name: textField1,
+      width: textField2,
+      height: textField3,
+      depth: textField4,
+      max_weight: textField5,
+    },
+    items_data: itemsData,
+  };
+
+  const options = {
+    method: "POST",
+    url: "http://127.0.0.1:8000/test/",
+    data: returnd,
+  };
+
   axios
     .request(options)
     .then(function (response) {
-      console.log(response.data);
+      setFullData(response.data);
     })
     .catch(function (error) {
       console.error(error);
@@ -82,6 +125,13 @@ function App() {
 
   const toggleSidebar = () => {
     setSidebar(!sidebar);
+  };
+
+  const addMoreItem = () => {
+    setItemsData([
+      ...itemsData,
+      { name: "string", width: 0, height: 0, depth: 0, weight: 0 },
+    ]);
   };
 
   return (
@@ -93,15 +143,109 @@ function App() {
         <div className="App-logo">
           <h1>Conatiner</h1>
           <div className="input">
-            <TextField />
-            <TextField />
-            <TextField />
+            <TextField
+              value={textField1}
+              onChange={(e) => setTextField1(e.target.value)}
+            />
+            <TextField
+              value={textField2}
+              onChange={(e) => setTextField2(e.target.value)}
+            />
+            <TextField
+              value={textField3}
+              onChange={(e) => setTextField3(e.target.value)}
+            />
+            <TextField
+              value={textField4}
+              onChange={(e) => setTextField4(e.target.value)}
+            />
+            <TextField
+              value={textField5}
+              onChange={(e) => setTextField5(e.target.value)}
+            />
           </div>
           <h1>Load</h1>
           <div className="input2">
-            <TextField />
-            <TextField />
-            <TextField />
+            {itemsData.map((item, index) => (
+              <div key={index} className="item-container">
+                <TextField
+                  label="Name"
+                  value={item.name}
+                  onChange={(e) => {
+                    const updatedItems = [...itemsData];
+                    updatedItems[index] = { ...item, name: e.target.value };
+                    setItemsData(updatedItems);
+                  }}
+                />
+                <TextField
+                  label="Width"
+                  type="number"
+                  value={item.width}
+                  onChange={(e) => {
+                    const updatedItems = [...itemsData];
+                    updatedItems[index] = {
+                      ...item,
+                      width: parseFloat(e.target.value),
+                    };
+                    setItemsData(updatedItems);
+                  }}
+                />
+                <TextField
+                  label="Height"
+                  type="number"
+                  value={item.height}
+                  onChange={(e) => {
+                    const updatedItems = [...itemsData];
+                    updatedItems[index] = {
+                      ...item,
+                      height: parseFloat(e.target.value),
+                    };
+                    setItemsData(updatedItems);
+                  }}
+                />
+                <TextField
+                  label="Depth"
+                  type="number"
+                  value={item.depth}
+                  onChange={(e) => {
+                    const updatedItems = [...itemsData];
+                    updatedItems[index] = {
+                      ...item,
+                      depth: parseFloat(e.target.value),
+                    };
+                    setItemsData(updatedItems);
+                  }}
+                />
+                <TextField
+                  label="Max Weight"
+                  type="number"
+                  value={item.weight}
+                  onChange={(e) => {
+                    const updatedItems = [...itemsData];
+                    updatedItems[index] = {
+                      ...item,
+                      weight: parseFloat(e.target.value),
+                    };
+                    setItemsData(updatedItems);
+                  }}
+                />
+              </div>
+            ))}
+            <div style={{ width: "100%", right: "100%", paddingTop: "1%" }}>
+              <Button onClick={addMoreItem} variant="outlined">
+                Add Item
+              </Button>
+            </div>
+            <div style={{ width: "100%", right: "100%", paddingTop: "1%" }}>
+              <Button
+                onClick={() => {
+                  setSubmitted(!sumbited);
+                }}
+                variant="outlined"
+              >
+                Submit
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -110,11 +254,20 @@ function App() {
             <ambientLight intensity={0.5} />
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
             <pointLight position={[-10, -10, -10]} />
-            <Box position={[9, 9, 9]} />
-            <Boxfill position={[9, 6, 6]} />
-            <Boxfill position={[6, 9, 6]} />
-            <Boxfill position={[6, 6, 9]} />
-            <OrbitControls autoRotate={false} target={[9, 9, 9]} />
+            <Box position={[0, 0, 0]} />
+            {sumbited &&
+              fullData.bins[0].fitted_items.map((item, index) => (
+                <Boxfill
+                  position={[
+                    (9 - 3 - item.pos[0] * 2) / 2,
+                    (9 - 3 - item.pos[1] * 2) / 2,
+                    (9 - 3 - item.pos[2] * 2) / 2,
+                  ]}
+                />
+              ))}
+            {/* <Boxfill position={[(9 - 3) / 2, (9 - 3) / 2, (9 - 3) / 2]} /> */}
+
+            <OrbitControls autoRotate={false} target={[0, 0, 0]} />
           </Canvas>
         </div>
       </div>

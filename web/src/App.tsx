@@ -257,11 +257,16 @@ function App() {
             <Box position={[0, 0, 0]} />
             {sumbited &&
               fullData.bins[0].fitted_items.map((item, index) => (
-                <Boxfill position={[(9 - 3) / 2, (11 - 3) / 2, (11 - 3) / 2]} />
+                <Boxfill
+                  position={[
+                    (9 - 3 - item.pos[0] * 2) / 2,
+                    (9 - 3 - item.pos[1] * 2) / 2,
+                    (9 - 3 - item.pos[2] * 2) / 2,
+                  ]}
+                />
               ))}
-            <Boxfill position={[(9 - 3) / 2, (9 - 3) / 2, (9 - 3) / 2]} />
-            <Boxfill position={[6, 9, 6]} />
-            <Boxfill position={[6, 6, 9]} />
+            {/* <Boxfill position={[(9 - 3) / 2, (9 - 3) / 2, (9 - 3) / 2]} /> */}
+
             <OrbitControls autoRotate={false} target={[0, 0, 0]} />
           </Canvas>
         </div>

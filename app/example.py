@@ -2,8 +2,28 @@ from py3dbp import Packer, Bin, Item
 from io import StringIO
 
 
-def testing(container_data: object):
-    output_buffer = StringIO()
+class PackingResult:
+    def __init__(self):
+        self.bins = []
+
+    def add_bin(
+        self, bin_name, width, height, depth, max_weight, fitted_items, unfitted_items
+    ):
+        self.bins.append(
+            {
+                "name": bin_name,
+                "width": width,
+                "height": height,
+                "depth": depth,
+                "max_weight": max_weight,
+                "fitted_items": fitted_items,
+                "unfitted_items": unfitted_items,
+            }
+        )
+
+
+def testing(container_data: object) -> PackingResult:
+    packing_result = PackingResult()
 
     packer = Packer()
     packer.add_bin(
@@ -22,22 +42,40 @@ def testing(container_data: object):
 
     packer.pack()
     for b in packer.bins:
-        output_buffer.write(":::::::::::" + b.string() + "\n")
+        bin_name = b.name
+        bin_width = b.width
+        bin_height = b.height
+        bin_depth = b.depth
+        bin_max_weight = b.max_weight
+        fitted_items = [
+            {
+                "name": item.name,
+                "width": item.width,
+                "height": item.height,
+                "depth": item.depth,
+                "weight": item.weight,
+            }
+            for item in b.items
+        ]
+        unfitted_items = [
+            {
+                "name": item.name,
+                "width": item.width,
+                "height": item.height,
+                "depth": item.depth,
+                "weight": item.weight,
+            }
+            for item in b.unfitted_items
+        ]
 
-        output_buffer.write("FITTED ITEMS:\n")
-        for item in b.items:
-            output_buffer.write("====> " + item.string() + "\n")
+        packing_result.add_bin(
+            bin_name,
+            bin_width,
+            bin_height,
+            bin_depth,
+            bin_max_weight,
+            fitted_items,
+            unfitted_items,
+        )
 
-        output_buffer.write("UNFITTED ITEMS:\n")
-        for item in b.unfitted_items:
-            output_buffer.write("====> " + item.string() + "\n")
-
-        output_buffer.write("***************************************************\n")
-        output_buffer.write("***************************************************\n")
-
-    result_string = output_buffer.getvalue()
-
-    output_buffer.close()
-    print(result_string)
-
-    return result_string
+    return packing_result

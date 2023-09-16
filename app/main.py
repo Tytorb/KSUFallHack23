@@ -159,7 +159,7 @@ class Contain(BaseModel):
     max_weight: float
 
 
-@app.post("/test/", status_code=status.HTTP_200_OK, response_model=str)
+@app.post("/test/", status_code=status.HTTP_200_OK, response_model=object)
 async def calc(container_data: Contain):
     testing(container_data)
     return testing(container_data)

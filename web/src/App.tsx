@@ -6,8 +6,6 @@ import Header from "./components/header";
 import axios from "axios";
 import "./components/sass/sidebar.scss";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Box2 } from "three";
-import ReactDOM from "react-dom";
 import { OrbitControls } from "@react-three/drei";
 
 // @ts-ignore
@@ -19,19 +17,43 @@ function Box(props) {
   const [clicked, click] = useState(false);
   // Subscribe this component to the render-loop, rotate the mesh every frame
   // @ts-ignore
-  useFrame((state, delta) => (ref.current.rotation.x += delta));
+
   // Return the view, these are regular Threejs elements expressed in JSX
   return (
     <mesh
       {...props}
       ref={ref}
-      scale={clicked ? 1.5 : 1}
+      scale={9}
+      onPointerOver={(event) => (event.stopPropagation(), hover(true))}
+    >
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color={"orange"} wireframe={true} />
+    </mesh>
+  );
+}
+
+// @ts-ignore
+function Boxfill(props) {
+  // This reference gives us direct access to the THREE.Mesh object
+  const ref = useRef();
+  // Hold state for hovered and clicked events
+  const [hovered, hover] = useState(false);
+  const [clicked, click] = useState(false);
+  // Subscribe this component to the render-loop, rotate the mesh every frame
+  // @ts-ignore
+
+  // Return the view, these are regular Threejs elements expressed in JSX
+  return (
+    <mesh
+      {...props}
+      ref={ref}
+      scale={3}
       onClick={(event) => click(!clicked)}
       onPointerOver={(event) => (event.stopPropagation(), hover(true))}
       onPointerOut={(event) => hover(false)}
     >
       <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
+      <meshStandardMaterial color={"hotpink"} wireframe={true} />
     </mesh>
   );
 }
@@ -88,9 +110,11 @@ function App() {
             <ambientLight intensity={0.5} />
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
             <pointLight position={[-10, -10, -10]} />
-            <Box position={[0, 0, 0]} />
-
-            <OrbitControls />
+            <Box position={[9, 9, 9]} />
+            <Boxfill position={[9, 6, 6]} />
+            <Boxfill position={[6, 9, 6]} />
+            <Boxfill position={[6, 6, 9]} />
+            <OrbitControls autoRotate={false} target={[9, 9, 9]} />
           </Canvas>
         </div>
       </div>

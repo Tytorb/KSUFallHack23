@@ -110,11 +110,11 @@ function App() {
             <ambientLight intensity={0.5} />
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
             <pointLight position={[-10, -10, -10]} />
-            <Box position={[9, 9, 9]} />
-            <Boxfill position={[9, 6, 6]} />
+            <Box position={[0, 0, 0]} />
+            <Boxfill position={[(9 - 3) / 2, (9 - 3) / 2, (9 - 3) / 2]} />
             <Boxfill position={[6, 9, 6]} />
             <Boxfill position={[6, 6, 9]} />
-            <OrbitControls autoRotate={false} target={[9, 9, 9]} />
+            <OrbitControls autoRotate={false} target={[0, 0, 0]} />
           </Canvas>
         </div>
       </div>

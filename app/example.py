@@ -54,6 +54,7 @@ def testing(container_data: object) -> PackingResult:
                 "height": item.height,
                 "depth": item.depth,
                 "weight": item.weight,
+                "pos": item.position,
             }
             for item in b.items
         ]

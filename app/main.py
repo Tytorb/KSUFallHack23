@@ -8,6 +8,8 @@ from typing import List, Annotated
 import models
 from fastapi.middleware.cors import CORSMiddleware
 from example import testing
+from py3dbp import Packer, Bin, Item
+from io import StringIO
 
 
 origins = [
@@ -146,12 +148,21 @@ async def delete_part_id(part_id: int, db: Session = Depends(get_db)):
     db.commit()
 
 
-@app.get(
-    "/test/",
-    status_code=status.HTTP_200_OK,
-)
-async def calc():
-    return testing(9)
+# (Bin("box-truck", test, test, test, 10000))
+
+
+class Contain(BaseModel):
+    name: str
+    width: float
+    height: float
+    depth: float
+    max_weight: float
+
+
+@app.post("/test/", status_code=status.HTTP_200_OK, response_model=str)
+async def calc(container_data: Contain):
+    testing(container_data)
+    return testing(container_data)
 
 
 class ContainerResponseSchema(BaseModel):

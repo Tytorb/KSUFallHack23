@@ -19,7 +19,6 @@ function Box(props) {
     <mesh
       {...props}
       ref={ref}
-      scale={9}
       onPointerOver={(event) => (event.stopPropagation(), hover(true))}
     >
       <boxGeometry args={[1, 1, 1]} />
@@ -38,12 +37,10 @@ function Boxfill(props) {
   // Subscribe this component to the render-loop, rotate the mesh every frame
   // @ts-ignore
 
-  // Return the view, these are regular Threejs elements expressed in JSX
   return (
     <mesh
       {...props}
       ref={ref}
-      scale={3}
       onClick={(event) => click(!clicked)}
       onPointerOver={(event) => (event.stopPropagation(), hover(true))}
       onPointerOut={(event) => hover(false)}
@@ -90,11 +87,6 @@ function App() {
   const [textField6, setTextField6] = useState("");
   const [textField7, setTextField7] = useState("");
   const [textField8, setTextField8] = useState("");
-
-  useEffect(() => {
-    console.log(fullData);
-    console.log(sumbited);
-  });
 
   var returnd = {
     container_data: {
@@ -254,17 +246,43 @@ function App() {
             <ambientLight intensity={0.5} />
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
             <pointLight position={[-10, -10, -10]} />
-            <Box position={[0, 0, 0]} />
-            {sumbited &&
-              fullData.bins[0].fitted_items.map((item, index) => (
-                <Boxfill
-                  position={[
-                    (9 - 3 - item.pos[0] * 2) / 2,
-                    (9 - 3 - item.pos[1] * 2) / 2,
-                    (9 - 3 - item.pos[2] * 2) / 2,
+            {sumbited && (
+              <>
+                <Box
+                  position={[0, 0, 0]}
+                  scale={[
+                    fullData?.bins[0].width,
+                    fullData?.bins[0].height,
+                    fullData?.bins[0].depth,
                   ]}
                 />
-              ))}
+                {/* @ts-ignore */}
+                {fullData.bins[0].fitted_items.map((item, index) => (
+                  <Boxfill
+                    key={index}
+                    position={[
+                      -(
+                        fullData?.bins[0].width -
+                        item.width -
+                        item.pos[0] * 2
+                      ) / 2,
+                      -(
+                        fullData?.bins[0].height -
+                        item.height -
+                        item.pos[1] * 2
+                      ) / 2,
+                      -(
+                        fullData?.bins[0].depth -
+                        item.depth -
+                        item.pos[2] * 2
+                      ) / 2,
+                    ]}
+                    scale={[item.width, item.height, item.depth]}
+                  />
+                ))}
+              </>
+            )}
+
             {/* <Boxfill position={[(9 - 3) / 2, (9 - 3) / 2, (9 - 3) / 2]} /> */}
 
             <OrbitControls autoRotate={false} target={[0, 0, 0]} />

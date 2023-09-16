@@ -38,15 +38,15 @@ def testing(container_data: object, item_data: List[object]) -> PackingResult:
     )
 
     for i in item_data:
-        packer.add_item(
-            Item(
-                i.name,
-                i.width,
-                i.height,
-                i.depth,
-                i.weight,
-            )
+        item = Item(
+            i.name,
+            i.width,
+            i.height,
+            i.depth,
+            i.weight,
         )
+        # Set the rotation type based on input
+        packer.add_item(item)
 
     packer.pack()
     for b in packer.bins:
@@ -58,11 +58,12 @@ def testing(container_data: object, item_data: List[object]) -> PackingResult:
         fitted_items = [
             {
                 "name": item.name,
-                "width": item.width,
-                "height": item.height,
-                "depth": item.depth,
+                "width": item.get_dimension()[0],  # Use calculated dimensions
+                "height": item.get_dimension()[1],
+                "depth": item.get_dimension()[2],
                 "weight": item.weight,
                 "pos": item.position,
+                "rot": item.rotation_type,
             }
             for item in b.items
         ]

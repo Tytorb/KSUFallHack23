@@ -148,9 +148,6 @@ async def delete_part_id(part_id: int, db: Session = Depends(get_db)):
     db.commit()
 
 
-# (Bin("box-truck", test, test, test, 10000))
-
-
 class Contain(BaseModel):
     name: str
     width: float

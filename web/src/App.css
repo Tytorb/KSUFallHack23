@@ -14,9 +14,15 @@
   padding: 10%;
 }
 
+.item-container {
+  display: inline;
+  padding-top: 2%;
+}
+
 .input2 {
-  display: flex;
   justify-content: space-evenly;
+  display: flex;
+  flex-direction: column;
   padding-top: 10%;
 }
 

@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from typing import List, Annotated
 import models
 from fastapi.middleware.cors import CORSMiddleware
+from example import testing
 
 
 origins = [
@@ -143,6 +144,14 @@ async def delete_part_id(part_id: int, db: Session = Depends(get_db)):
 
     db.delete(item)
     db.commit()
+
+
+@app.get(
+    "/test/",
+    status_code=status.HTTP_200_OK,
+)
+async def calc():
+    return testing(9)
 
 
 class ContainerResponseSchema(BaseModel):

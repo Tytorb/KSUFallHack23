@@ -1,28 +1,35 @@
 from py3dbp import Packer, Bin, Item
-
-packer = Packer()
-# name, width, height, depth, weight
-packer.add_bin(Bin("box-truck", 96, 96, 288, 312000))
-packer.add_bin(Bin("shipping-container", 96, 102, 480, 710400))
-packer.add_bin(Bin("storage-unit", 120, 96, 240, 1200000))
-
-packer.add_item(Item("NAPA Premium Brake Rotor", 13, 2.19, 2, 26.4))
-packer.add_item(Item("NAPA PROFORMER Beam Wiper Blade", 2.4, 25, 1.5, 0.5))
-packer.add_item(Item("NAPA The Legend Premium AGM Battery", 11, 7.5, 7, 47.5))
+from io import StringIO
 
 
-packer.pack()
+def testing(test: int):
+    output_buffer = StringIO()
 
-for b in packer.bins:
-    print(":::::::::::", b.string())
+    packer = Packer()
+    packer.add_bin(Bin("box-truck", test, test, test, 10000))
 
-    print("FITTED ITEMS:")
-    for item in b.items:
-        print("====> ", item.string())
+    packer.add_item(Item("NAPA Premium Brake Rotor", 3, 3, 3, 3))
+    packer.add_item(Item("NAPA PROFORMER Beam Wiper Blade", 3, 3, 3, 3))
+    packer.add_item(Item("NAPA The Legend Premium AGM Battery", 3, 3, 3, 3))
 
-    print("UNFITTED ITEMS:")
-    for item in b.unfitted_items:
-        print("====> ", item.string())
+    packer.pack()
 
-    print("***************************************************")
-    print("***************************************************")
+    for b in packer.bins:
+        output_buffer.write(":::::::::::" + b.string() + "\n")
+
+        output_buffer.write("FITTED ITEMS:\n")
+        for item in b.items:
+            output_buffer.write("====> " + item.string() + "\n")
+
+        output_buffer.write("UNFITTED ITEMS:\n")
+        for item in b.unfitted_items:
+            output_buffer.write("====> " + item.string() + "\n")
+
+        output_buffer.write("***************************************************\n")
+        output_buffer.write("***************************************************\n")
+
+    result_string = output_buffer.getvalue()
+
+    output_buffer.close()
+
+    return result_string

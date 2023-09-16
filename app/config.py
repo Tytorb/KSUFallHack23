@@ -20,7 +20,7 @@ class Settings:
         "POSTGRES_PORT", 5433
     )  # default postgres port is 5432
     POSTGRES_DB: str = os.getenv("POSTGRES_DB", "tdd")
-    DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@4.tcp.ngrok.io:10976/{POSTGRES_DB}"
+    DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@8.tcp.ngrok.io:18219/{POSTGRES_DB}"
 
 
 settings = Settings()

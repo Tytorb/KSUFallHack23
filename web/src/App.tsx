@@ -69,6 +69,10 @@ function App() {
     max_weight: 0,
   });
 
+  const [sumbited, setSubmitted] = useState(false);
+
+  const [fullData, setFullData] = useState();
+
   const [itemsData, setItemsData] = useState([
     {
       name: "string",
@@ -88,7 +92,8 @@ function App() {
   const [textField8, setTextField8] = useState("");
 
   useEffect(() => {
-    console.log(textField1);
+    console.log(fullData);
+    console.log(sumbited);
   });
 
   var returnd = {
@@ -111,7 +116,7 @@ function App() {
   axios
     .request(options)
     .then(function (response) {
-      console.log(response.data);
+      setFullData(response.data);
     })
     .catch(function (error) {
       console.error(error);
@@ -231,6 +236,16 @@ function App() {
                 Add Item
               </Button>
             </div>
+            <div style={{ width: "100%", right: "100%", paddingTop: "1%" }}>
+              <Button
+                onClick={() => {
+                  setSubmitted(!sumbited);
+                }}
+                variant="outlined"
+              >
+                Submit
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -240,6 +255,10 @@ function App() {
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
             <pointLight position={[-10, -10, -10]} />
             <Box position={[0, 0, 0]} />
+            {sumbited &&
+              fullData.bins[0].fitted_items.map((item, index) => (
+                <Boxfill position={[(9 - 3) / 2, (11 - 3) / 2, (11 - 3) / 2]} />
+              ))}
             <Boxfill position={[(9 - 3) / 2, (9 - 3) / 2, (9 - 3) / 2]} />
             <Boxfill position={[6, 9, 6]} />
             <Boxfill position={[6, 6, 9]} />

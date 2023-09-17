@@ -111,9 +111,6 @@ function App() {
   const [textField3, setTextField3] = useState("");
   const [textField4, setTextField4] = useState("");
   const [textField5, setTextField5] = useState("");
-  const [textField6, setTextField6] = useState("");
-  const [textField7, setTextField7] = useState("");
-  const [textField8, setTextField8] = useState("");
 
   var returnd = {
     container_data: {
@@ -172,21 +169,26 @@ function App() {
           <div className="input">
             <TextField
               value={textField1}
+              label="Name"
               onChange={(e) => setTextField1(e.target.value)}
             />
             <TextField
+              label="Width"
               value={textField2}
               onChange={(e) => setTextField2(e.target.value)}
             />
             <TextField
+              label="Height"
               value={textField3}
               onChange={(e) => setTextField3(e.target.value)}
             />
             <TextField
               value={textField4}
+              label="Depth"
               onChange={(e) => setTextField4(e.target.value)}
             />
             <TextField
+              label="Max Weight"
               value={textField5}
               onChange={(e) => setTextField5(e.target.value)}
             />
@@ -244,7 +246,7 @@ function App() {
                   }}
                 />
                 <TextField
-                  label="Max Weight"
+                  label="Weight"
                   type="number"
                   value={item.weight}
                   onChange={(e) => {

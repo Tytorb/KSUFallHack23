@@ -1,7 +1,8 @@
 from fastapi import FastAPI, HTTPException, Depends, status, Response
 from config import settings
-from session import engine
-from session import engine, SessionLocal
+
+# from session import engine
+# from session import engine, SessionLocal
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from typing import List, Annotated
@@ -31,18 +32,18 @@ def start_application():
 
 app = start_application()
 
-models.Base.metadata.create_all(bind=engine)
+# models.Base.metadata.create_all(bind=engine)
 
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# def get_db():
+#     db = SessionLocal()
+#     try:
+#         yield db
+#     finally:
+#         db.close()
 
 
-db_dependency = Annotated[Session, Depends(get_db)]
+# db_dependency = Annotated[Session, Depends(get_db)]
 
 
 class Container(BaseModel):
@@ -66,11 +67,11 @@ def home():
     return {"msg": "nruh"}
 
 
-@app.post("/container/", status_code=status.HTTP_201_CREATED)
-async def part_id(part: Container, db: db_dependency):
-    db_container = models.Container(**part.dict())
-    db.add(db_container)
-    db.commit()
+# @app.post("/container/", status_code=status.HTTP_201_CREATED)
+# async def part_id(part: Container, db: db_dependency):
+#     db_container = models.Container(**part.dict())
+#     db.add(db_container)
+#     db.commit()
 
 
 class ContainerResponseSchema(BaseModel):
@@ -81,71 +82,71 @@ class ContainerResponseSchema(BaseModel):
     height: float
 
 
-@app.get(
-    "/container/",
-    response_model=ContainerResponseSchema,
-    status_code=status.HTTP_200_OK,
-)
-async def read_part_id(part_id: int, db: Session = Depends(get_db)):
-    container = (
-        db.query(models.Container).filter(models.Container.part_id == part_id).first()
-    )
-    if container is None:
-        raise HTTPException(status_code=404, detail="No container existing")
+# @app.get(
+#     "/container/",
+#     response_model=ContainerResponseSchema,
+#     status_code=status.HTTP_200_OK,
+# )
+# async def read_part_id(part_id: int, db: Session = Depends(get_db)):
+#     container = (
+#         db.query(models.Container).filter(models.Container.part_id == part_id).first()
+#     )
+#     if container is None:
+#         raise HTTPException(status_code=404, detail="No container existing")
 
-    response_model_instance = ContainerResponseSchema(**container.__dict__)
+#     response_model_instance = ContainerResponseSchema(**container.__dict__)
 
-    return response_model_instance
-
-
-@app.post("/item/", status_code=status.HTTP_201_CREATED)
-async def part_id(part: Item, db: db_dependency):
-    db_container = models.Item(**part.dict())
-    db.add(db_container)
-    db.commit()
+#     return response_model_instance
 
 
-@app.get(
-    "/item/",
-    response_model=ContainerResponseSchema,
-    status_code=status.HTTP_200_OK,
-)
-async def read_part_id(part_id: int, db: Session = Depends(get_db)):
-    item = db.query(models.Item).filter(models.Item.part_id == part_id).first()
-    if item is None:
-        raise HTTPException(status_code=404, detail="No container existing")
-
-    response_model_instance = ContainerResponseSchema(**item.__dict__)
-
-    return response_model_instance
+# @app.post("/item/", status_code=status.HTTP_201_CREATED)
+# async def part_id(part: Item, db: db_dependency):
+#     db_container = models.Item(**part.dict())
+#     db.add(db_container)
+#     db.commit()
 
 
-@app.delete(
-    "/container/{part_id}",
-    status_code=status.HTTP_204_NO_CONTENT,
-)
-async def delete_container(part_id: int, db: Session = Depends(get_db)):
-    container = (
-        db.query(models.Container).filter(models.Container.part_id == part_id).first()
-    )
-    if container is None:
-        raise HTTPException(status_code=404, detail="No container existing")
+# @app.get(
+#     "/item/",
+#     response_model=ContainerResponseSchema,
+#     status_code=status.HTTP_200_OK,
+# )
+# async def read_part_id(part_id: int, db: Session = Depends(get_db)):
+#     item = db.query(models.Item).filter(models.Item.part_id == part_id).first()
+#     if item is None:
+#         raise HTTPException(status_code=404, detail="No container existing")
 
-    db.delete(container)
-    db.commit()
+#     response_model_instance = ContainerResponseSchema(**item.__dict__)
+
+#     return response_model_instance
 
 
-@app.delete(
-    "/item/{part_id}",
-    status_code=status.HTTP_204_NO_CONTENT,
-)
-async def delete_part_id(part_id: int, db: Session = Depends(get_db)):
-    item = db.query(models.Item).filter(models.Item.part_id == part_id).first()
-    if item is None:
-        raise HTTPException(status_code=404, detail="No part existing")
+# @app.delete(
+#     "/container/{part_id}",
+#     status_code=status.HTTP_204_NO_CONTENT,
+# )
+# async def delete_container(part_id: int, db: Session = Depends(get_db)):
+#     container = (
+#         db.query(models.Container).filter(models.Container.part_id == part_id).first()
+#     )
+#     if container is None:
+#         raise HTTPException(status_code=404, detail="No container existing")
 
-    db.delete(item)
-    db.commit()
+#     db.delete(container)
+#     db.commit()
+
+
+# @app.delete(
+#     "/item/{part_id}",
+#     status_code=status.HTTP_204_NO_CONTENT,
+# )
+# async def delete_part_id(part_id: int, db: Session = Depends(get_db)):
+#     item = db.query(models.Item).filter(models.Item.part_id == part_id).first()
+#     if item is None:
+#         raise HTTPException(status_code=404, detail="No part existing")
+
+#     db.delete(item)
+#     db.commit()
 
 
 class Contain(BaseModel):
